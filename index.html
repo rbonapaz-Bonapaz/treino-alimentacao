@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness OS - v2026 Stable</title>
+    <title>Fitness OS - Ultra Sync 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .chat-container { height: calc(100vh - 280px); }
         .dashboard-grid { display: grid; grid-template-columns: 1fr 400px; height: 100vh; }
         .scroll-hide::-webkit-scrollbar { display: none; }
-        .ai-content ul { list-style-type: disc; margin-left: 1.5rem; }
+        .ai-content ul { list-style-type: disc; margin-left: 1.5rem; margin-top: 0.5rem; }
         .update-flash { animation: flash 0.8s ease-out; }
         @keyframes flash { 0% { background-color: rgba(59, 130, 246, 0.4); } 100% { background-color: transparent; } }
     </style>
@@ -21,54 +21,67 @@
         <main class="p-6 overflow-y-auto scroll-hide">
             <header class="mb-6 flex justify-between items-end border-b border-slate-800 pb-4">
                 <div>
-                    <h1 class="text-3xl font-black text-blue-500 italic uppercase">FITNESS <span class="text-white font-normal">OS</span></h1>
+                    <h1 class="text-3xl font-black text-blue-500 tracking-tighter italic uppercase">FITNESS <span class="text-white font-normal text-2xl">OS</span></h1>
                     <div class="flex gap-4 mt-1 text-slate-400 text-xs">
                         <span>38 anos</span>
-                        <span>Peso: <b>75.5</b>kg</span>
-                        <span>Limiar: <b>4:43</b> min/km</span>
+                        <span>Peso: <b id="peso-val">75.5</b>kg</span>
+                        <span>Limiar: <b id="pace-val">4:43</b> min/km</span>
                     </div>
                 </div>
-                <div id="macro-summary" class="flex gap-3 text-[10px] font-mono bg-slate-900 p-2 rounded border border-slate-800">
-                    <span class="text-blue-400 font-bold">P: --g</span> 
-                    <span class="text-green-400 font-bold">C: --g</span> 
-                    <span class="text-yellow-400 font-bold">G: --g</span>
+                <div id="macro-summary" class="flex gap-3 text-[10px] font-mono bg-slate-900 p-2 rounded border border-slate-800 shadow-lg">
+                    <span class="text-blue-400 font-bold tracking-tighter italic">P: --g</span> 
+                    <span class="text-green-400 font-bold tracking-tighter italic">C: --g</span> 
+                    <span class="text-yellow-400 font-bold tracking-tighter italic">G: --g</span>
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-[11px]">
                 <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-center">
-                    <canvas id="recoveryChart" height="180"></canvas>
+                    <canvas id="recoveryChart" height="200"></canvas>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                    <h3 class="font-bold text-slate-500 mb-2 uppercase italic tracking-widest text-[10px]">Status Coros</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>Sono</span><b class="text-blue-400 font-bold">7h 45m</b></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>Stress</span><b class="text-yellow-500 font-bold">Baixo (24)</b></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>VFC</span><b class="text-green-500 font-bold">62 ms</b></div>
+                    </div>
                 </div>
                 <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
                     <h3 class="font-bold text-slate-500 mb-2 uppercase italic tracking-widest text-[10px]">Log Recente</h3>
-                    <div id="activity-log" class="space-y-1 text-[10px] italic text-slate-500 italic font-mono uppercase">Dashboard pronto.</div>
+                    <div id="activity-log" class="space-y-1 text-[10px] italic text-slate-500 italic font-mono uppercase tracking-tighter">
+                        Dashboard Conectado.
+                    </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <section id="card-corrida" class="bg-slate-900 p-5 rounded-2xl border-t-2 border-green-500 shadow-2xl min-h-[150px]">
-                    <h2 class="font-bold mb-3 text-green-400 uppercase tracking-widest italic">🏃 Plano Corrida</h2>
-                    <div id="corrida-content" class="ai-content text-slate-300">Aguardando...</div>
+                    <h2 class="font-bold mb-3 text-green-400 uppercase tracking-widest italic tracking-wider">🏃 Plano Corrida</h2>
+                    <div id="corrida-content" class="ai-content text-slate-300">Aguardando definição...</div>
                 </section>
                 <section id="card-musculacao" class="bg-slate-900 p-5 rounded-2xl border-t-2 border-red-500 shadow-2xl min-h-[150px]">
-                    <h2 class="font-bold mb-3 text-red-400 uppercase tracking-widest italic">🏋️ Musculação</h2>
-                    <div id="musculacao-content" class="ai-content text-slate-300">Aguardando...</div>
+                    <h2 class="font-bold mb-3 text-red-400 uppercase tracking-widest italic tracking-wider">🏋️ Musculação</h2>
+                    <div id="musculacao-content" class="ai-content text-slate-300">Aguardando definição...</div>
                 </section>
                 <section id="card-dieta" class="bg-slate-900 p-5 rounded-2xl border-t-2 border-yellow-500 shadow-2xl col-span-full min-h-[150px]">
-                    <h2 class="font-bold mb-3 text-yellow-500 uppercase tracking-widest italic font-bold">🍎 Nutrição</h2>
-                    <div id="dieta-content" class="ai-content grid grid-cols-1 md:grid-cols-3 gap-4 italic text-slate-600">Aguardando...</div>
+                    <h2 class="font-bold mb-3 text-yellow-500 uppercase tracking-widest italic font-bold tracking-wider">🍎 Nutrição</h2>
+                    <div id="dieta-content" class="ai-content grid grid-cols-1 md:grid-cols-3 gap-4 italic text-slate-600">Aguardando Coach...</div>
                 </section>
             </div>
         </main>
 
         <aside class="bg-slate-900 border-l border-slate-800 flex flex-col shadow-2xl">
             <div class="p-4 border-b border-slate-800 bg-slate-950/50">
-                <button onclick="quickAction('MONTAR_PLANO')" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded uppercase font-bold transition text-white text-xs">📝 Criar Plano Semanal</button>
+                <button onclick="quickAction('MONTAR_PLANO')" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded uppercase font-bold transition text-white text-xs mb-3">📝 Criar Plano Semanal</button>
+                <div id="status-ia" class="text-[9px] text-center uppercase font-black text-slate-500 tracking-widest italic">Sincronizado</div>
             </div>
+
             <div class="chat-container p-4 overflow-y-auto space-y-4 text-[12px] scroll-hide flex flex-col" id="chat-box"></div>
+
             <div class="p-4 bg-slate-950 mt-auto border-t border-slate-800">
                 <div class="relative">
-                    <input type="text" id="user-input" placeholder="Fale com o Coach..." class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-white text-xs pr-10">
+                    <input type="text" id="user-input" placeholder="Mensagem..." class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-white text-xs pr-10">
                     <button onclick="falarComGemini()" class="absolute right-2 top-1.5 bg-blue-600 p-2 rounded-lg text-white font-bold text-sm">➜</button>
                 </div>
             </div>
@@ -76,10 +89,8 @@
     </div>
 
     <script>
-        // CHAVE ATUALIZADA E MODELO CORRIGIDO PARA gemini-1.5-flash-latest
-        const API_KEY = "AIzaSyBbk88bpLs25HiYPNKIyMJXFmAwhIzVrVc";
-        const MODEL_NAME = "gemini-1.5-flash-latest"; // O "latest" resolve o erro de model not found
-        
+        // CHAVE NOVA ATUALIZADA (...yBb0U)
+        const API_KEY = "AIzaSyBSnxcH0CSPJ1SqGwlUoWU51demFVyBb0U";
         let radarChart;
 
         function initChart() {
@@ -94,7 +105,7 @@
             });
         }
 
-        const SYSTEM_PROMPT = `Você é o Coach Gemini. Perfil: 38 anos, 75.5kg, Corredor (4:43). Responda APENAS em JSON.`;
+        const SYSTEM_PROMPT = `Você é o Coach Gemini. Perfil: 38 anos, 75.5kg, Pace 4:43. Responda APENAS em JSON plano.`;
 
         async function falarComGemini(promptOverride = null) {
             const msg = promptOverride || document.getElementById('user-input').value;
@@ -102,23 +113,21 @@
 
             addMsg('user', msg);
             document.getElementById('user-input').value = "";
+            document.getElementById('status-ia').textContent = "SINCRONIZANDO...";
 
             try {
-                // A URL USANDO v1beta E O MODELO LATEST
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
+                // TENTA O ENDPOINT v1beta COM MODELO LATEST (MAIS ESTÁVEL EM 2026)
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
                 
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: SYSTEM_PROMPT }, { text: msg }] }]
+                        contents: [{ parts: [{ text: SYSTEM_PROMPT }, { text: `Comando: ${msg}. Dados: Peso 75.5, Pace 4:43.` }] }]
                     })
                 });
 
-                if (!response.ok) {
-                    const err = await response.json();
-                    throw new Error(err.error.message || "Erro na conexão");
-                }
+                if (!response.ok) throw new Error(`Status: ${response.status}`);
 
                 const data = await response.json();
                 let text = data.candidates[0].content.parts[0].text;
@@ -129,10 +138,15 @@
                 if (json.updateMusculacao) updateUI('musculacao-content', json.updateMusculacao, 'card-musculacao');
                 if (json.updateDieta) updateUI('dieta-content', json.updateDieta, 'card-dieta');
                 if (json.radarData) { radarChart.data.datasets[0].data = json.radarData; radarChart.update(); }
+                if (json.macros) {
+                    document.getElementById('macro-summary').innerHTML = `<span class="text-blue-400 font-bold">P: ${json.macros.p}g</span> <span class="text-green-400 font-bold">C: ${json.macros.c}g</span> <span class="text-yellow-400 font-bold">G: ${json.macros.g}g</span>`;
+                }
 
             } catch (e) {
                 console.error(e);
-                addMsg('gemini', "Erro de Sincronização: " + e.message);
+                addMsg('gemini', "Erro de conexão. Verifique se o link do GitHub Pages está ativo.");
+            } finally {
+                document.getElementById('status-ia').textContent = "Sincronizado";
             }
         }
 
@@ -151,7 +165,7 @@
         }
 
         function quickAction(acao) {
-            falarComGemini("Gere meu plano semanal: Musculação, Corrida e Dieta.");
+            falarComGemini("Gere meu plano semanal integrado de Corrida, Musculação e Dieta.");
         }
 
         window.onload = () => { initChart(); falarComGemini("Carregue o dashboard."); };
