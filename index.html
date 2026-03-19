@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-br"><!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness OS - Performance Dashboard</title>
+    <title>Fitness OS - v2026 Fix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -12,8 +11,6 @@
         .dashboard-grid { display: grid; grid-template-columns: 1fr 400px; height: 100vh; }
         .scroll-hide::-webkit-scrollbar { display: none; }
         .ai-content ul { list-style-type: disc; margin-left: 1.5rem; margin-top: 0.5rem; }
-        .ai-content li { margin-bottom: 0.3rem; }
-        .editable:hover { background: rgba(59, 130, 246, 0.2); cursor: pointer; border-radius: 4px; padding: 0 4px; }
         .update-flash { animation: flash 0.8s ease-out; }
         @keyframes flash { 0% { background-color: rgba(59, 130, 246, 0.4); } 100% { background-color: transparent; } }
     </style>
@@ -27,9 +24,8 @@
                     <h1 class="text-3xl font-black text-blue-500 tracking-tighter italic">FITNESS <span class="text-white font-normal">OS</span></h1>
                     <div class="flex gap-4 mt-1 text-slate-400 text-xs">
                         <span>38 anos</span>
-                        <span>Peso: <b id="peso-val" class="editable text-white" onclick="editarDado('peso')">75.5</b>kg</span>
-                        <span>Limiar: <b id="pace-val" class="editable text-white" onclick="editarDado('pace')">4:43</b> min/km</span>
-                        <span>Recuperação: <b id="recovery-val" class="text-green-400 font-bold">90%</b></span>
+                        <span>Peso: <b id="peso-val" class="text-white">75.5</b>kg</span>
+                        <span>Limiar: <b id="pace-val" class="text-white">4:43</b> min/km</span>
                     </div>
                 </div>
                 <div id="macro-summary" class="flex gap-3 text-[10px] font-mono bg-slate-900 p-2 rounded border border-slate-800 shadow-lg">
@@ -39,23 +35,22 @@
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-[11px]">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-center">
                     <canvas id="recoveryChart" height="200"></canvas>
                 </div>
                 <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                    <h3 class="font-bold text-slate-500 mb-2 uppercase italic tracking-widest">Status Coros</h3>
+                    <h3 class="font-bold text-slate-500 mb-2 uppercase italic tracking-widest text-[10px]">Status Coros</h3>
                     <div class="space-y-3">
-                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>Sono</span><b id="sleep-status" class="text-blue-400">7h 45m</b></div>
-                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>Stress</span><b id="stress-status" class="text-yellow-500">Baixo (24)</b></div>
-                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>VFC</span><b class="text-green-500">62 ms</b></div>
-                        <div class="flex justify-between"><span>Carga 7d</span><b class="text-white">650</b></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>Sono</span><b id="sleep-status" class="text-blue-400 font-bold">7h 45m</b></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>Stress</span><b id="stress-status" class="text-yellow-500 font-bold">Baixo (24)</b></div>
+                        <div class="flex justify-between"><span>VFC</span><b class="text-green-500 font-bold">62 ms</b></div>
                     </div>
                 </div>
                 <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 overflow-hidden text-[10px]">
-                    <h3 class="font-bold text-slate-500 mb-2 uppercase italic tracking-widest text-[10px]">Log Recente</h3>
-                    <div id="activity-log" class="space-y-1 overflow-y-auto max-h-32 scroll-hide text-[10px]">
-                        <p class="text-slate-600 italic">Dashboard iniciado...</p>
+                    <h3 class="font-bold text-slate-500 mb-2 uppercase italic tracking-widest">Log Recente</h3>
+                    <div id="activity-log" class="space-y-1 overflow-y-auto max-h-32 scroll-hide">
+                        <p class="text-slate-600 italic">Sincronizado.</p>
                     </div>
                 </div>
             </div>
@@ -63,11 +58,11 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <section id="card-corrida" class="bg-slate-900 p-5 rounded-2xl border-t-2 border-green-500 shadow-2xl transition-all min-h-[150px]">
                     <h2 class="font-bold mb-3 text-green-400 uppercase tracking-widest italic tracking-wider">🏃 Plano Corrida</h2>
-                    <div id="corrida-content" class="ai-content text-slate-300">Aguardando definição do plano...</div>
+                    <div id="corrida-content" class="ai-content text-slate-300 italic text-slate-600">Aguardando definição do plano...</div>
                 </section>
                 <section id="card-musculacao" class="bg-slate-900 p-5 rounded-2xl border-t-2 border-red-500 shadow-2xl transition-all min-h-[150px]">
                     <h2 class="font-bold mb-3 text-red-400 uppercase tracking-widest italic tracking-wider">🏋️ Força & Spinning</h2>
-                    <div id="musculacao-content" class="ai-content text-slate-300">Aguardando definição do treino...</div>
+                    <div id="musculacao-content" class="ai-content text-slate-300 italic text-slate-600">Aguardando definição do treino...</div>
                 </section>
                 <section id="card-dieta" class="bg-slate-900 p-5 rounded-2xl border-t-2 border-yellow-500 shadow-2xl col-span-full transition-all min-h-[150px]">
                     <h2 class="font-bold mb-3 text-yellow-500 uppercase tracking-widest italic font-bold tracking-wider">🍎 Dieta & Macros</h2>
@@ -77,39 +72,29 @@
         </main>
 
         <aside class="bg-slate-900 border-l border-slate-800 flex flex-col shadow-2xl">
-            <div class="p-4 border-b border-slate-800 bg-slate-950/50">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="font-bold text-blue-500 text-xs tracking-widest uppercase italic font-bold">Performance Coach</h3>
-                    <span id="status-ia" class="text-[9px] uppercase font-black text-green-500 tracking-widest">Ativo</span>
-                </div>
-                <div class="grid grid-cols-2 gap-2 text-[10px]">
-                    <button onclick="quickAction('MONTAR_PLANO')" class="bg-blue-600 hover:bg-blue-500 p-2 rounded uppercase font-bold transition text-white">📝 Criar Plano</button>
-                    <button onclick="quickAction('TREINO_FEITO')" class="bg-slate-800 hover:bg-green-600 p-2 rounded uppercase font-bold transition text-slate-300">✅ Treino OK</button>
-                    <button onclick="quickAction('REPORTAR_SONO')" class="bg-slate-800 hover:bg-blue-600 p-2 rounded uppercase font-bold transition text-slate-300">🛌 Log Sono</button>
-                    <button onclick="quickAction('STRESS_ALTO')" class="bg-slate-800 hover:bg-red-600 p-2 rounded uppercase font-bold transition text-slate-300">🔥 Stress Alto</button>
+            <div class="p-4 border-b border-slate-800 bg-slate-950/50 text-center">
+                <button onclick="quickAction('MONTAR_PLANO')" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded uppercase font-bold transition text-white text-xs mb-2">📝 Criar Plano Semanal</button>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="quickAction('TREINO_FEITO')" class="bg-slate-800 hover:bg-green-600 p-2 rounded uppercase font-bold transition text-[9px] text-slate-300">✅ Treino OK</button>
+                    <button onclick="quickAction('STRESS_ALTO')" class="bg-slate-800 hover:bg-red-600 p-2 rounded uppercase font-bold transition text-[9px] text-slate-300">🔥 Stress Alto</button>
                 </div>
             </div>
 
             <div class="chat-container p-4 overflow-y-auto space-y-4 text-[12px] scroll-hide flex flex-col" id="chat-box"></div>
 
             <div class="p-4 bg-slate-950 mt-auto border-t border-slate-800">
-                <div class="flex flex-col gap-3">
-                    <input type="file" id="imageInput" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
-                    <label for="imageInput" class="w-full text-[9px] bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-400 font-black py-2 rounded uppercase cursor-pointer text-center transition">📷 Anexar Print Coros / Foto Refeição</label>
-                    <div class="relative">
-                        <input type="text" id="user-input" placeholder="Mensagem para o Coach..." class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none pr-12 text-white text-xs">
-                        <button onclick="falarComGemini()" class="absolute right-2 top-1.5 bg-blue-600 p-2 rounded-lg hover:bg-blue-500 transition-all text-white font-bold text-sm">➜</button>
-                    </div>
+                <div class="relative">
+                    <input type="text" id="user-input" placeholder="Mensagem para o Coach..." class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none text-white text-xs pr-12">
+                    <button onclick="falarComGemini()" class="absolute right-2 top-1.5 bg-blue-600 p-2 rounded-lg text-white">➜</button>
                 </div>
             </div>
         </aside>
     </div>
 
     <script>
-        // CONFIGURAÇÃO DA CHAVE E ENDPOINT v1beta (CORRIGIDO PARA EVITAR ERRO 404)
-        const API_KEY = "AIzaSyCrYqGHDCEYwU8QXY34dZMbQ4tLKvAw_-w";
+        // CHAVE ATUALIZADA (USE ESTA EXATAMENTE)
+        const API_KEY = "AIzaSyBbk88bpLs25HiYPNKIyMJXFmAwhIzVrVc"; 
         let radarChart;
-        let imagemBase64 = null;
 
         function initChart() {
             const ctx = document.getElementById('recoveryChart').getContext('2d');
@@ -117,62 +102,42 @@
                 type: 'radar',
                 data: {
                     labels: ['Sono', 'Stress', 'Carga', 'Dieta', 'VFC'],
-                    datasets: [{
-                        data: [85, 90, 70, 80, 75],
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        borderWidth: 2, pointRadius: 2
-                    }]
+                    datasets: [{ data: [85, 90, 70, 80, 75], borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.2)', borderWidth: 2 }]
                 },
-                options: {
-                    scales: { r: { grid: { color: '#334155' }, angleLines: { color: '#334155' }, ticks: { display: false }, min: 0, max: 100, pointLabels: { color: '#94a3b8', font: { size: 10 } } } },
-                    plugins: { legend: { display: false } }
-                }
+                options: { scales: { r: { grid: { color: '#334155' }, angleLines: { color: '#334155' }, ticks: { display: false }, min: 0, max: 100, pointLabels: { color: '#94a3b8' } } }, plugins: { legend: { display: false } } }
             });
         }
 
-        const SYSTEM_PROMPT = `Você é o Coach Gemini de Elite. Perfil: 38 anos, Corredor (Limiar 4:43), 75.5kg.
-        Responda EXCLUSIVAMENTE em formato JSON puro, sem markdown ou textos extras.
-        {
-          "fala": "Resposta curta",
-          "updateCorrida": "HTML", "updateMusculacao": "HTML", "updateDieta": "HTML",
-          "radarData": [80, 90, 70, 85, 60], 
-          "sleepText": "8h", "stressText": "Baixo", "recoveryVal": "90%",
-          "logItem": "Ação concluída",
-          "macros": {"p": 160, "c": 300, "g": 70}
-        }`;
+        const SYSTEM_PROMPT = `Você é o Coach Gemini. Usuário: 38a, Corredor (4:43), 75.5kg. Responda APENAS JSON.`;
 
         async function falarComGemini(promptOverride = null) {
             const msg = promptOverride || document.getElementById('user-input').value;
-            if (!msg && !imagemBase64) return;
+            if (!msg) return;
 
             addMsg('user', msg);
             document.getElementById('user-input').value = "";
-            document.getElementById('status-ia').textContent = "PROCESSANDO...";
 
             try {
-                // ENDPOINT CORRIGIDO PARA O LINK DO GITHUB PAGES
+                // ENDPOINT COM CHAVE NOVA E MODELO FLASH 1.5
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
                 
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{
-                            parts: [
-                                { text: SYSTEM_PROMPT },
-                                { text: `Comando: ${msg}. Dados Atuais: Peso ${document.getElementById('peso-val').innerText}, Pace ${document.getElementById('pace-val').innerText}.` }
-                            ]
-                        }]
+                        contents: [{ parts: [{ text: SYSTEM_PROMPT }, { text: msg }] }]
                     })
                 });
 
-                if (!response.ok) throw new Error(`Status: ${response.status}`);
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.error.message || "Falha na conexão");
+                }
 
                 const data = await response.json();
                 let text = data.candidates[0].content.parts[0].text;
                 
-                // Limpeza rigorosa para garantir que apenas o JSON seja extraído
+                // Limpeza rigorosa do JSON
                 const jsonStart = text.indexOf('{');
                 const jsonEnd = text.lastIndexOf('}') + 1;
                 const json = JSON.parse(text.substring(jsonStart, jsonEnd));
@@ -182,298 +147,17 @@
                 if (json.updateMusculacao) updateUI('musculacao-content', json.updateMusculacao, 'card-musculacao');
                 if (json.updateDieta) updateUI('dieta-content', json.updateDieta, 'card-dieta');
                 if (json.radarData) { radarChart.data.datasets[0].data = json.radarData; radarChart.update(); }
-                if (json.sleepText) document.getElementById('sleep-status').innerText = json.sleepText;
-                if (json.stressText) document.getElementById('stress-status').innerText = json.stressText;
-                if (json.recoveryVal) document.getElementById('recovery-val').innerText = json.recoveryVal;
-                
                 if (json.logItem) {
                     const log = document.getElementById('activity-log');
-                    log.innerHTML = `<p class="border-l-2 border-blue-500 pl-2 mb-2 text-slate-500 italic uppercase italic font-mono uppercase tracking-tighter">✓ ${json.logItem}</p>` + log.innerHTML;
+                    log.innerHTML = `<p class="border-l-2 border-blue-500 pl-2 mb-2 text-slate-500 italic">✓ ${json.logItem}</p>` + log.innerHTML;
                 }
-                
-                if (json.macros) {
-                    document.getElementById('macro-summary').innerHTML = `
-                        <span class="text-blue-400 font-bold tracking-tighter">P: ${json.macros.p}g</span> 
-                        <span class="text-green-400 font-bold tracking-tighter">C: ${json.macros.c}g</span> 
-                        <span class="text-yellow-400 font-bold tracking-tighter">G: ${json.macros.g}g</span>`;
-                }
-
-            } catch (e) {
-                console.error(e);
-                addMsg('gemini', "Erro de conexão. Verifique sua chave API ou abra o link oficial do GitHub Pages.");
-            } finally {
-                document.getElementById('status-ia').textContent = "ATUALIZADO";
-                imagemBase64 = null;
-            }
-        }
-
-        function updateUI(id, html, cardId) {
-            document.getElementById(id).innerHTML = html;
-            document.getElementById(cardId).classList.add('update-flash');
-            setTimeout(() => document.getElementById(cardId).classList.remove('update-flash'), 800);
-        }
-
-        function addMsg(sender, text) {
-            const chat = document.getElementById('chat-box');
-            const div = document.createElement('div');
-            div.className = sender === 'user' ? 'bg-blue-600/10 p-2 rounded-lg self-end text-right border border-blue-500/20 max-w-[90%]' : 'bg-slate-800 p-2 rounded-lg self-start border border-slate-700 max-w-[90%]';
-            div.innerHTML = text;
-            chat.appendChild(div);
-            chat.scrollTop = chat.scrollHeight;
-        }
-
-        function handleImageUpload(input) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                imagemBase64 = e.target.result.split(',')[1];
-                addMsg('user', "📷 Imagem carregada. Clique na seta azul para o Coach analisar.");
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-
-        function quickAction(acao) {
-            const prompts = {
-                'MONTAR_PLANO': "Gere meu novo plano semanal completo agora: Musculação, Corrida e Dieta.",
-                'REPORTAR_SONO': "Vou registrar meus dados de sono e recuperação de hoje.",
-                'TREINO_FEITO': "Marque o treino de hoje como concluído e sugira o pós-treino.",
-                'STRESS_ALTO': "Meu stress está alto hoje. Como devo ajustar o treino?"
-            };
-            falarComGemini(prompts[acao]);
-        }
-
-        function editarDado(tipo) {
-            const novo = prompt(`Novo valor para ${tipo}:`);
-            if (novo) {
-                document.getElementById(tipo + '-val').innerText = novo;
-                falarComGemini(`Atualizei manualmente meu ${tipo} para ${novo}.`);
-            }
-        }
-
-        window.onload = () => {
-            initChart();
-            falarComGemini("Carregue meu dashboard inicial com o plano atual de 2026.");
-        };
-
-        document.getElementById('user-input').addEventListener('keypress', (e) => e.key === 'Enter' && falarComGemini());
-    </script>
-</body>
-</html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness OS - Performance Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .chat-container { height: calc(100vh - 280px); }
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 400px; height: 100vh; }
-        .scroll-hide::-webkit-scrollbar { display: none; }
-        .ai-content ul { list-style-type: disc; margin-left: 1.5rem; margin-top: 0.5rem; }
-        .ai-content li { margin-bottom: 0.3rem; }
-        .editable:hover { background: rgba(59, 130, 246, 0.2); cursor: pointer; border-radius: 4px; padding: 0 4px; }
-        .update-flash { animation: flash 0.8s ease-out; }
-        @keyframes flash { 0% { background-color: rgba(59, 130, 246, 0.4); } 100% { background-color: transparent; } }
-    </style>
-</head>
-<body class="bg-slate-950 text-slate-100 font-sans text-sm">
-
-    <div class="dashboard-grid">
-        <main class="p-6 overflow-y-auto scroll-hide">
-            <header class="mb-6 flex justify-between items-end border-b border-slate-800 pb-4">
-                <div>
-                    <h1 class="text-3xl font-black text-blue-500 tracking-tighter italic uppercase">Fitness <span class="text-white font-normal text-2xl">OS</span></h1>
-                    <div class="flex gap-4 mt-1 text-slate-400 text-xs">
-                        <span>38 anos</span>
-                        <span>Peso: <b id="peso-val" class="editable text-white" onclick="editarDado('peso')">75.5</b>kg</span>
-                        <span>Limiar: <b id="pace-val" class="editable text-white" onclick="editarDado('pace')">4:43</b> min/km</span>
-                        <span>Recuperação: <b id="recovery-val" class="text-green-400 font-bold">90%</b></span>
-                    </div>
-                </div>
-                <div id="macro-summary" class="flex gap-3 text-[10px] font-mono bg-slate-900 p-2 rounded border border-slate-800 tracking-tighter shadow-lg">
-                    <span class="text-blue-400 font-bold">P: --g</span> 
-                    <span class="text-green-400 font-bold">C: --g</span> 
-                    <span class="text-yellow-400 font-bold">G: --g</span>
-                </div>
-            </header>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-[11px]">
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-center">
-                    <canvas id="recoveryChart" height="200"></canvas>
-                </div>
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                    <h3 class="font-bold text-slate-500 mb-2 uppercase italic tracking-widest text-[10px]">Status Coros</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>Sono</span><b id="sleep-status" class="text-blue-400 font-bold">7h 45m</b></div>
-                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>Stress</span><b id="stress-status" class="text-yellow-500 font-bold">Baixo (24)</b></div>
-                        <div class="flex justify-between border-b border-slate-800 pb-1"><span>VFC</span><b class="text-green-500 font-bold">62 ms</b></div>
-                        <div class="flex justify-between"><span>Carga 7d</span><b class="text-white font-bold">650</b></div>
-                    </div>
-                </div>
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 overflow-hidden text-[10px]">
-                    <h3 class="font-bold text-slate-500 mb-2 uppercase italic tracking-widest">Log Recente</h3>
-                    <div id="activity-log" class="space-y-1 overflow-y-auto max-h-32 scroll-hide">
-                        <p class="text-slate-600 italic">Dashboard iniciado...</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <section id="card-corrida" class="bg-slate-900 p-5 rounded-2xl border-t-2 border-green-500 shadow-2xl transition-all min-h-[150px]">
-                    <h2 class="font-bold mb-3 text-green-400 uppercase tracking-widest italic">🏃 Plano Corrida</h2>
-                    <div id="corrida-content" class="ai-content text-slate-300 italic text-slate-600">Aguardando novo plano...</div>
-                </section>
-                <section id="card-musculacao" class="bg-slate-900 p-5 rounded-2xl border-t-2 border-red-500 shadow-2xl transition-all min-h-[150px]">
-                    <h2 class="font-bold mb-3 text-red-400 uppercase tracking-widest italic">🏋️ Musculação</h2>
-                    <div id="musculacao-content" class="ai-content text-slate-300 italic text-slate-600">Aguardando novo plano...</div>
-                </section>
-                <section id="card-dieta" class="bg-slate-900 p-5 rounded-2xl border-t-2 border-yellow-500 shadow-2xl col-span-full transition-all min-h-[150px]">
-                    <h2 class="font-bold mb-3 text-yellow-500 uppercase tracking-widest italic font-bold">🍎 Nutrição</h2>
-                    <div id="dieta-content" class="ai-content grid grid-cols-1 md:grid-cols-3 gap-4 italic text-slate-600 text-xs">Aguardando Coach...</div>
-                </section>
-            </div>
-        </main>
-
-        <aside class="bg-slate-900 border-l border-slate-800 flex flex-col shadow-2xl">
-            <div class="p-4 border-b border-slate-800 bg-slate-950/50">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="font-bold text-blue-500 text-xs tracking-widest uppercase italic">Coach Gemini</h3>
-                    <span id="status-ia" class="text-[9px] font-black text-green-500 tracking-widest uppercase">Pronto</span>
-                </div>
-                <div class="grid grid-cols-2 gap-2 text-[10px]">
-                    <button onclick="quickAction('MONTAR_PLANO')" class="bg-blue-600 hover:bg-blue-500 p-2 rounded uppercase font-bold transition text-white">📝 Criar Plano</button>
-                    <button onclick="quickAction('TREINO_FEITO')" class="bg-slate-800 hover:bg-green-600 p-2 rounded uppercase font-bold transition text-slate-300">✅ Treino OK</button>
-                    <button onclick="quickAction('REPORTAR_SONO')" class="bg-slate-800 hover:bg-blue-600 p-2 rounded uppercase font-bold transition text-slate-300">🛌 Log Sono</button>
-                    <button onclick="quickAction('STRESS_ALTO')" class="bg-slate-800 hover:bg-red-600 p-2 rounded uppercase font-bold transition text-slate-300">🔥 Stress Alto</button>
-                </div>
-            </div>
-
-            <div class="chat-container p-4 overflow-y-auto space-y-4 text-[12px] scroll-hide flex flex-col" id="chat-box"></div>
-
-            <div class="p-4 bg-slate-950 mt-auto border-t border-slate-800">
-                <div class="flex flex-col gap-3">
-                    <input type="file" id="imageInput" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
-                    <label for="imageInput" class="w-full text-[9px] bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-400 font-black py-2 rounded uppercase cursor-pointer text-center transition">📷 Enviar Foto Coros / Refeição</label>
-                    <div class="relative">
-                        <input type="text" id="user-input" placeholder="Mensagem para o Coach..." class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none pr-12 text-white text-xs">
-                        <button onclick="falarComGemini()" class="absolute right-2 top-1.5 bg-blue-600 p-2 rounded-lg hover:bg-blue-500 transition-all text-white font-bold text-sm">➜</button>
-                    </div>
-                </div>
-            </div>
-        </aside>
-    </div>
-
-    <script>
-        // CHAVE DE API CONFIGURADA COM ENDPOINT v1 (REMOVIDO BETA)
-        const API_KEY = "AIzaSyCrYqGHDCEYwU8QXY34dZMbQ4tLKvAw_-w";
-        let radarChart;
-        let imagemBase64 = null;
-
-        function editarDado(tipo) {
-            const atual = document.getElementById(tipo + '-val').innerText;
-            const novo = prompt(`Editar ${tipo.toUpperCase()}:`, atual);
-            if (novo && novo !== atual) {
-                document.getElementById(tipo + '-val').innerText = novo;
-                falarComGemini(`Meu novo ${tipo} é ${novo}. Ajuste meus planos.`);
-            }
-        }
-
-        function quickAction(acao) {
-            const prompts = {
-                'MONTAR_PLANO': "Crie meu plano semanal completo de 2026: Musculação, Corrida (base pace 4:43) e Dieta para meus 75.5kg.",
-                'REPORTAR_SONO': "Vou registrar meus dados de sono e recuperação de hoje.",
-                'TREINO_FEITO': "Marque o treino de hoje como concluído.",
-                'STRESS_ALTO': "Meu stress está alto hoje. Como ajustar meu treino?"
-            };
-            falarComGemini(prompts[acao]);
-        }
-
-        function initChart() {
-            const ctx = document.getElementById('recoveryChart').getContext('2d');
-            radarChart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Sono', 'Stress', 'Carga', 'Dieta', 'VFC'],
-                    datasets: [{ data: [85, 90, 70, 80, 75], borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.2)', borderWidth: 2, pointRadius: 2 }]
-                },
-                options: {
-                    scales: { r: { grid: { color: '#334155' }, angleLines: { color: '#334155' }, ticks: { display: false }, min: 0, max: 100, pointLabels: { color: '#94a3b8', font: { size: 10 } } } },
-                    plugins: { legend: { display: false } }
-                }
-            });
-        }
-
-        const SYSTEM_PROMPT = `Você é o Coach de Elite. Usuário: 38 anos, Corredor (Limiar 4:43), 75.5kg.
-        Responda EXCLUSIVAMENTE em JSON plano.
-        {
-          "fala": "Mensagem curta",
-          "updateCorrida": "HTML", "updateMusculacao": "HTML", "updateDieta": "HTML",
-          "radarData": [80, 90, 70, 85, 60], 
-          "sleepText": "8h", "stressText": "Baixo", "recoveryVal": "90%",
-          "logItem": "Ação concluída",
-          "macros": {"p": 160, "c": 300, "g": 70}
-        }`;
-
-        async function falarComGemini(promptOverride = null) {
-            const msg = promptOverride || document.getElementById('user-input').value;
-            if (!msg && !imagemBase64) return;
-
-            addMsg('user', msg);
-            document.getElementById('user-input').value = "";
-            document.getElementById('status-ia').textContent = "SINCRONIZANDO...";
-
-            try {
-                // ENDPOINT v1 (ESTÁVEL)
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [
-                                { text: SYSTEM_PROMPT },
-                                { text: `Comando: ${msg}. Dados Atuais: Peso ${document.getElementById('peso-val').innerText}, Pace ${document.getElementById('pace-val').innerText}.` }
-                            ]
-                        }]
-                    })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error.message || `Erro ${response.status}`);
-                }
-
-                const data = await response.json();
-                let text = data.candidates[0].content.parts[0].text;
-                
-                // Limpeza para extrair apenas o JSON se a IA mandar texto fora
-                const jsonStart = text.indexOf('{');
-                const jsonEnd = text.lastIndexOf('}') + 1;
-                const jsonString = text.substring(jsonStart, jsonEnd);
-                const json = JSON.parse(jsonString);
-
-                addMsg('gemini', json.fala);
-                if (json.updateCorrida) updateUI('corrida-content', json.updateCorrida, 'card-corrida');
-                if (json.updateMusculacao) updateUI('musculacao-content', json.updateMusculacao, 'card-musculacao');
-                if (json.updateDieta) updateUI('dieta-content', json.updateDieta, 'card-dieta');
-                if (json.radarData) { radarChart.data.datasets[0].data = json.radarData; radarChart.update(); }
-                if (json.sleepText) document.getElementById('sleep-status').innerText = json.sleepText;
-                if (json.stressText) document.getElementById('stress-status').innerText = json.stressText;
-                if (json.recoveryVal) document.getElementById('recovery-val').innerText = json.recoveryVal;
-                
-                if (json.logItem) {
-                    const log = document.getElementById('activity-log');
-                    log.innerHTML = `<p class="border-l-2 border-blue-500 pl-2 mb-2 text-slate-500 italic tracking-tighter">✓ ${json.logItem}</p>` + log.innerHTML;
-                }
-                
                 if (json.macros) {
                     document.getElementById('macro-summary').innerHTML = `<span class="text-blue-400 font-bold">P: ${json.macros.p}g</span> <span class="text-green-400 font-bold">C: ${json.macros.c}g</span> <span class="text-yellow-400 font-bold">G: ${json.macros.g}g</span>`;
                 }
 
             } catch (e) {
                 console.error(e);
-                addMsg('gemini', `ERRO: ${e.message}. Tente abrir em Janela Anônima.`);
-            } finally {
-                document.getElementById('status-ia').textContent = "PRONTO";
-                imagemBase64 = null;
+                addMsg('gemini', "Erro: " + e.message);
             }
         }
 
@@ -492,21 +176,12 @@
             chat.scrollTop = chat.scrollHeight;
         }
 
-        function handleImageUpload(input) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                imagemBase64 = e.target.result.split(',')[1];
-                addMsg('user', "📷 Imagem carregada. Clique na seta para analisar.");
-            };
-            reader.readAsDataURL(input.files[0]);
+        function quickAction(acao) {
+            const p = acao === 'MONTAR_PLANO' ? "Gere meu plano semanal: Musculação, Corrida (pace 4:43) e Dieta." : "Treino feito!";
+            falarComGemini(p);
         }
 
-        window.onload = () => {
-            initChart();
-            falarComGemini("Inicie meu dashboard com os dados de 2026.");
-        };
-
-        document.getElementById('user-input').addEventListener('keypress', (e) => e.key === 'Enter' && falarComGemini());
+        window.onload = () => { initChart(); falarComGemini("Inicie meu dashboard."); };
     </script>
 </body>
 </html>
